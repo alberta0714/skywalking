@@ -36,7 +36,7 @@ public interface AbstractTracerContext {
     /**
      * Build the reference between this segment and a cross-process segment. How to build, depends on the
      * implementation.
-     *
+     * 构建引用关系（segment和一个跨线程的segment）
      * @param carrier carried the context from a cross-process segment.
      */
     void extract(ContextCarrier carrier);

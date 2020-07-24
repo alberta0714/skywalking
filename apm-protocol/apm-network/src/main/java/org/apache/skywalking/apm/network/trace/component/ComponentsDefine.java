@@ -128,6 +128,8 @@ public class ComponentsDefine {
 
     public static final OfficialComponent JDK_HTTP = new OfficialComponent(66, "JdkHttp");
 
+    public static final OfficialComponent REST_HIGH_LEVEL_CLIENT = new OfficialComponent(77, "rest-high-level-client");
+
     private static ComponentsDefine INSTANCE = new ComponentsDefine();
 
     private String[] components;
@@ -186,6 +188,7 @@ public class ComponentsDefine {
         addComponent(SPRING_CLOUD_GATEWAY);
         addComponent(RESTEASY);
         addComponent(SOLRJ);
+        addComponent(REST_HIGH_LEVEL_CLIENT);
     }
 
     private void addComponent(OfficialComponent component) {

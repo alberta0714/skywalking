@@ -40,7 +40,7 @@ import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.OverrideC
  * -------------------------------
  *
  * This class wouldn't be loaded in real env. This is a class template for dynamic class generation.
- *
+ * 这是一个动态类生成的模板，并不加载环境变量。
  * @author wusheng
  */
 public class InstanceMethodInterWithOverrideArgsTemplate {
@@ -95,8 +95,7 @@ public class InstanceMethodInterWithOverrideArgsTemplate {
         } catch (Throwable t) {
             try {
                 if (INTERCEPTOR != null) {
-                    INTERCEPTOR.handleMethodException(targetObject, method, allArguments, method.getParameterTypes(),
-                        t);
+                    INTERCEPTOR.handleMethodException(targetObject, method, allArguments, method.getParameterTypes(), t);
                 }
             } catch (Throwable t2) {
                 if (LOGGER != null) {
@@ -124,7 +123,7 @@ public class InstanceMethodInterWithOverrideArgsTemplate {
      * Prepare the context. Link to the agent core in AppClassLoader.
      */
     private static void prepare() {
-        if (INTERCEPTOR == null) {
+        if (INTERCEPTOR == null) { //
             ClassLoader loader = BootstrapInterRuntimeAssist.getAgentClassLoader();
 
             if (loader != null) {

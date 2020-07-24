@@ -20,6 +20,7 @@ package org.apache.skywalking.oap.server.storage.plugin.zipkin.elasticsearch;
 
 import com.google.common.base.Strings;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import lombok.Setter;
 import org.apache.skywalking.apm.util.StringUtil;
@@ -217,5 +218,20 @@ public class ZipkinTraceQueryEsDAO extends EsDAO implements ITraceQueryDAO {
             spanList.add(swSpan);
         }
         return spanList;
+    }
+    public static void main(String[] args) {
+        String dataBinaryBase64 = "Cg4KDNMBqAGA2PLC3cWrHBKmARD///////////8BGOu7o6+3LiDsu6Ovty4qURINCgvWASzk0O/C3cWrHBgBINYBMAI41gFCGlJlY2VpdmVDYW5hbE1zZ3NPZlVzZXJJbmZvUhpSZWNlaXZlQ2FuYWxNc2dzT2ZVc2VySW5mbzAjWARgKXoZCgltcS5icm9rZXISDHZtLm1haW46NjY2N3oXCghtcS50b3BpYxILdXNlcl9iaW5sb2cYBiDTAQ==";
+        System.out.println(dataBinaryBase64);
+
+        byte[] bytes = Base64.getDecoder().decode(dataBinaryBase64);
+        String utf8 = new String(bytes, Charset.forName("utf-8"));
+        System.out.println(utf8);
+
+
+
+//        Span span = SpanBytesDecoder.PROTO3.decodeOne(Base64.getEncoder().encode(dataBinaryBase64.getBytes()));
+//
+//        System.out.println(span);
+
     }
 }

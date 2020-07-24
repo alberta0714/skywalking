@@ -19,23 +19,30 @@
 
 package org.apache.skywalking.apm.plugin.canal;
 
-import java.net.InetSocketAddress;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
+
+import java.net.InetSocketAddress;
 
 
 /**
  * @author withlin
  */
 public class CanalConstructorInterceptor implements InstanceConstructorInterceptor {
+
+    /**
+     * 构建连接时，记录连接的地址和实例到  enhancedInstance
+     * @param objInst      com.alibaba.otter.canal.client.impl.SimpleCanalConnector
+     * @param allArguments public SimpleCanalConnector(SocketAddress address, String username, String password, String destination){
+     */
     @Override
     public void onConstruct(EnhancedInstance objInst, Object[] allArguments) {
         InetSocketAddress address = (InetSocketAddress) allArguments[0];
-        String destination =  allArguments[3].toString();
+        String destination = allArguments[3].toString();
         CanalEnhanceInfo canalEnhanceInfo = new CanalEnhanceInfo();
         if (address != null) {
             String url = address.getAddress().toString() + ":" + address.getPort();
-            canalEnhanceInfo.setUrl(url.replace('/',' '));
+            canalEnhanceInfo.setUrl(url.replace('/', ' '));
         }
         canalEnhanceInfo.setDestination(destination);
         objInst.setSkyWalkingDynamicField(canalEnhanceInfo);

@@ -74,6 +74,8 @@
         <module>vertx-plugins</module>
         <module>resteasy-plugin</module>
         <module>solrj-7.x-plugin</module>
+		<module>kafka-plugin</module>
+		<module>elasticsearch-7.x-plugin</module>
     </modules>
     <packaging>pom</packaging>
 

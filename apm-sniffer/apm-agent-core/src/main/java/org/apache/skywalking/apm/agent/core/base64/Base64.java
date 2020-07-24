@@ -18,6 +18,8 @@
 package org.apache.skywalking.apm.agent.core.base64;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+
 import org.apache.skywalking.apm.agent.core.logging.api.ILog;
 import org.apache.skywalking.apm.agent.core.logging.api.LogManager;
 
@@ -53,7 +55,7 @@ public final class Base64 {
         }
 
         // If the input includes whitespace, this output array will be longer than necessary.
-        byte[] out = new byte[(int)(limit * 6L / 8L)];
+        byte[] out = new byte[(int) (limit * 6L / 8L)];
         int outCount = 0;
         int inCount = 0;
 
@@ -88,14 +90,14 @@ public final class Base64 {
             }
 
             // Append this char's 6 bits to the word.
-            word = (word << 6) | (byte)bits;
+            word = (word << 6) | (byte) bits;
 
             // For every 4 chars of input, we accumulate 24 bits of output. Emit 3 bytes.
             inCount++;
             if (inCount % 4 == 0) {
-                out[outCount++] = (byte)(word >> 16);
-                out[outCount++] = (byte)(word >> 8);
-                out[outCount++] = (byte)word;
+                out[outCount++] = (byte) (word >> 16);
+                out[outCount++] = (byte) (word >> 8);
+                out[outCount++] = (byte) word;
             }
         }
 
@@ -106,12 +108,12 @@ public final class Base64 {
         } else if (lastWordChars == 2) {
             // We read 2 chars followed by "==". Emit 1 byte with 8 of those 12 bits.
             word = word << 12;
-            out[outCount++] = (byte)(word >> 16);
+            out[outCount++] = (byte) (word >> 16);
         } else if (lastWordChars == 3) {
             // We read 3 chars, followed by "=". Emit 2 bytes for 16 of those 18 bits.
             word = word << 6;
-            out[outCount++] = (byte)(word >> 16);
-            out[outCount++] = (byte)(word >> 8);
+            out[outCount++] = (byte) (word >> 16);
+            out[outCount++] = (byte) (word >> 8);
         }
 
         // If we sized our out array perfectly, we're done.
@@ -124,18 +126,18 @@ public final class Base64 {
         return prefix;
     }
 
-    private static final byte[] MAP = new byte[] {
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-        'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
-        '5', '6', '7', '8', '9', '+', '/'
+    private static final byte[] MAP = new byte[]{
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+            'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+            'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
+            '5', '6', '7', '8', '9', '+', '/'
     };
 
-    private static final byte[] URL_MAP = new byte[] {
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-        'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-        'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
-        '5', '6', '7', '8', '9', '-', '_'
+    private static final byte[] URL_MAP = new byte[]{
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+            'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+            'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
+            '5', '6', '7', '8', '9', '-', '_'
     };
 
     public static String encode(String text) {
@@ -184,5 +186,17 @@ public final class Base64 {
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError(e);
         }
+    }
+
+    public static void main(String[] args) {
+        String text = "Cg4KDNMBqAGA2PLC3cWrHBKmARD///////////8BGOu7o6+3LiDsu6Ovty4qURINCgvWASzk0O/C3cWrHBgBINYBMAI41gFCGlJlY2VpdmVDYW5hbE1zZ3NPZlVzZXJJbmZvUhpSZWNlaXZlQ2FuYWxNc2dzT2ZVc2VySW5mbzAjWARgKXoZCgltcS5icm9rZXISDHZtLm1haW46NjY2N3oXCghtcS50b3BpYxILdXNlcl9iaW5sb2cYBiDTAQ==";
+        String[] parts = text.split("\\|", 80);
+        System.out.println("parts.length=" + parts.length + " > " + Arrays.asList(parts));
+
+//        r = Base64.decode2UTFString(text);
+//        System.out.println(r);
+//        map.put(DATA_BINARY, new String(java.util.Base64.getEncoder().encode(storageData.getDataBinary())));
+//        System.out.println(1123424);
+
     }
 }

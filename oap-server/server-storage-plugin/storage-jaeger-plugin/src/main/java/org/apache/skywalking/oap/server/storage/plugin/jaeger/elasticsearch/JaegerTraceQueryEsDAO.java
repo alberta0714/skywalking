@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.skywalking.oap.server.core.Const;
 import org.apache.skywalking.oap.server.core.analysis.manual.segment.SegmentRecord;
 import org.apache.skywalking.oap.server.core.cache.ServiceInventoryCache;
@@ -270,5 +271,21 @@ public class JaegerTraceQueryEsDAO extends EsDAO implements ITraceQueryDAO {
     private String format(ByteString bytes) {
         Base64.Encoder encoder = Base64.getEncoder();
         return encoder.encodeToString(bytes.toByteArray());
+    }
+    public static void main(String[] args) throws Exception {
+        String dataBinaryBase64 = "Cg4KDPQBpwGgyrbUjdyrHBKLAhD///////////8BGM2I+NO3LiCAifjTty4qXRINCgvzATOQtoOnjdyrHBgBIPMBKgx2bS5tYWluOjY2Njc48wFCGlJlY2VpdmVDYW5hbE1zZ3NPZlVzZXJJbmZvUhpSZWNlaXZlQ2FuYWxNc2dzT2ZVc2VySW5mbzozS2Fma2EvdXNlcl9iaW5sb2cvQ29uc3VtZXIvZ3JvdXBfdXNlcl9iaW5sb2dfZXNtYWtlWARgKXokCgNzemMSHWthZmthLWNvbnN1bWVy5omT5qCH562+5rWL6K+VehkKCW1xLmJyb2tlchIMdm0ubWFpbjo2NjY3ehcKCG1xLnRvcGljEgt1c2VyX2JpbmxvZxgGIPQB";
+
+        Model.Span jaegerSpan = Model.Span.newBuilder().mergeFrom(Base64.getDecoder().decode(dataBinaryBase64)).build();
+
+        String traceid = jaegerSpan.getTraceId().toStringUtf8();
+        System.out.println("trace id:" + traceid);
+
+        List<Model.SpanRef> list = jaegerSpan.getReferencesList();
+        System.out.println("ref list.size = " + list.size());
+        for (Model.SpanRef span : list) {
+            System.out.println("ref trace id:" + span.getTraceId());
+        }
+
+        System.out.println("jaeger span:[" + ToStringBuilder.reflectionToString(jaegerSpan) + "]");
     }
 }

@@ -45,7 +45,7 @@ if [ -z "$MAVEN_SKIP_RC" ] ; then
   fi
 
 fi
-
+JAVA_HOME="C:\Program Files\Java\jdk1.8.0_131"
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false;
 darwin=false;

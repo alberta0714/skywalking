@@ -168,15 +168,19 @@ public class TracingContext implements AbstractTracerContext {
 
     /**
      * Extract the carrier to build the reference for the pre segment.
+     * 摘录信息到引用的segment
      *
-     * @param carrier carried the context from a cross-process segment. Ref to {@link
+     *  @param carrier carried the context from a cross-process segment. Ref to {@link
      * AbstractTracerContext#extract(ContextCarrier)}
      */
     @Override
     public void extract(ContextCarrier carrier) {
         TraceSegmentRef ref = new TraceSegmentRef(carrier);
+        // 加入引用
         this.segment.ref(ref);
+        // 设置当前段的分布式traceID
         this.segment.relatedGlobalTraces(carrier.getDistributedTraceId());
+        // 添加入口引用关系
         AbstractSpan span = this.activeSpan();
         if (span instanceof EntrySpan) {
             span.ref(ref);
