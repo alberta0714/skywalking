@@ -35,8 +35,12 @@ import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedI
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import org.apache.skywalking.apm.network.trace.component.ComponentsDefine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KafkaConsumerInterceptor implements InstanceMethodsAroundInterceptor {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    TraceUtils traceUtils = new TraceUtils(logger, "kafka-consumer");
 
     public static final String OPERATE_NAME_PREFIX = "Kafka/";
     public static final String CONSUMER_OPERATE_NAME = "/Consumer/";
@@ -86,7 +90,9 @@ public class KafkaConsumerInterceptor implements InstanceMethodsAroundIntercepto
                     ContextManager.extract(contextCarrier);
                 }
             }
+            traceUtils.showTrace("后A");
             ContextManager.stopSpan();
+            traceUtils.showTrace("后B");
         }
         return ret;
     }

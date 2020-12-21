@@ -31,7 +31,8 @@ import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceM
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import org.apache.skywalking.apm.network.trace.component.ComponentsDefine;
 import org.apache.skywalking.apm.plugin.elasticsearch.v6.RestClientEnhanceInfo;
-import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+//import org.elasticsearch.client.indices.CreateIndexRequest;
 
 public class IndicesClientCreateMethodsInterceptor implements InstanceMethodsAroundInterceptor {
 
@@ -49,7 +50,8 @@ public class IndicesClientCreateMethodsInterceptor implements InstanceMethodsAro
             Tags.DB_INSTANCE.set(span, createIndexRequest.index());
             if (TRACE_DSL) {
                 //Store es mapping parameters
-                Tags.DB_STATEMENT.set(span, createIndexRequest.mappings().utf8ToString());
+//                Tags.DB_STATEMENT.set(span, createIndexRequest.mappings().utf8ToString());
+                Tags.DB_STATEMENT.set(span, createIndexRequest.mappings().toString());
             }
             SpanLayer.asDB(span);
         }

@@ -22,13 +22,18 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
 import org.apache.skywalking.apm.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProducerConstructorInterceptor implements InstanceConstructorInterceptor {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    TraceUtils traceUtils = new TraceUtils(logger, "spring-kafka-consumer");
 
     @Override
     public void onConstruct(EnhancedInstance objInst, Object[] allArguments) {
         ProducerConfig config = (ProducerConfig) allArguments[0];
         objInst.setSkyWalkingDynamicField(StringUtil.join(';', config.getList("bootstrap.servers")
                                                                      .toArray(new String[0])));
+        traceUtils.showTrace("触发构造 - 生产器");
     }
 }

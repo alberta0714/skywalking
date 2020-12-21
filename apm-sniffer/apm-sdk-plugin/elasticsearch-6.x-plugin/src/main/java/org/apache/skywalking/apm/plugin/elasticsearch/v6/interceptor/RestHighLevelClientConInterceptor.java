@@ -18,15 +18,18 @@
 
 package org.apache.skywalking.apm.plugin.elasticsearch.v6.interceptor;
 
-import java.util.List;
+import org.apache.http.HttpHost;
 import org.apache.skywalking.apm.agent.core.logging.api.ILog;
 import org.apache.skywalking.apm.agent.core.logging.api.LogManager;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedInstance;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceConstructorInterceptor;
 import org.apache.skywalking.apm.plugin.elasticsearch.v6.RestClientEnhanceInfo;
-import org.elasticsearch.client.Node;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
+
+import java.io.IOException;
+
+//import org.elasticsearch.client.Node;
 
 public class RestHighLevelClientConInterceptor implements InstanceConstructorInterceptor {
 
@@ -37,12 +40,21 @@ public class RestHighLevelClientConInterceptor implements InstanceConstructorInt
         RestClientBuilder restClientBuilder = (RestClientBuilder) (allArguments[0]);
         RestClient restClient = restClientBuilder.build();
 
-        RestClientEnhanceInfo restClientEnhanceInfo = new RestClientEnhanceInfo();
-        List<Node> nodeList = restClient.getNodes();
-        for (Node node : nodeList) {
-            restClientEnhanceInfo.addHttpHost(node.getHost());
+        int port = -1;
+        String hostname = "无法获取host";
+        try {
+            HttpHost httpHost = restClient.performRequest("GET", "").getHost();
+            hostname = httpHost.getHostName();
+            port = httpHost.getPort();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
+        RestClientEnhanceInfo restClientEnhanceInfo = new RestClientEnhanceInfo();
+        restClientEnhanceInfo.addHttpHost(new HttpHost(hostname, port));
+//        List<Node> nodeList = restClient.getNodes();
+//        for (Node node : nodeList) {
+//            restClientEnhanceInfo.addHttpHost(node.getHost());
+//        }
         objInst.setSkyWalkingDynamicField(restClientEnhanceInfo);
     }
 }

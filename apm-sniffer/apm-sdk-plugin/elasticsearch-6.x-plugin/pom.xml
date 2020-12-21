@@ -32,7 +32,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <elasticsearch.rest.high.level.client.version>6.7.1</elasticsearch.rest.high.level.client.version>
+<!--        <elasticsearch.rest.high.level.client.version>6.7.1</elasticsearch.rest.high.level.client.version>-->
+        <elasticsearch.rest.high.level.client.version>6.3.1</elasticsearch.rest.high.level.client.version>
     </properties>
 
     <dependencies>

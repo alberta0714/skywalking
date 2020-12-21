@@ -31,13 +31,18 @@ import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.EnhancedI
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstanceMethodsAroundInterceptor;
 import org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.MethodInterceptResult;
 import org.apache.skywalking.apm.network.trace.component.ComponentsDefine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Method;
 
 public class KafkaProducerInterceptor implements InstanceMethodsAroundInterceptor {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    TraceUtils traceUtils = new TraceUtils(logger, "kafka-producer");
 
     public static final String OPERATE_NAME_PREFIX = "Kafka/";
     public static final String PRODUCER_OPERATE_NAME_SUFFIX = "/Producer";
-
+    // KafkaProducer, doSend, ProducerRecord,
     @Override
     public void beforeMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes,
                              MethodInterceptResult result) throws Throwable {
@@ -83,12 +88,15 @@ public class KafkaProducerInterceptor implements InstanceMethodsAroundIntercepto
                 }
             }
         }
+        traceUtils.showTrace("生产前");
     }
 
     @Override
     public Object afterMethod(EnhancedInstance objInst, Method method, Object[] allArguments, Class<?>[] argumentsTypes,
                               Object ret) throws Throwable {
+        traceUtils.showTrace("生产后A");
         ContextManager.stopSpan();
+        traceUtils.showTrace("生产后B");
         return ret;
     }
 
