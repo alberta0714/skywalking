@@ -35,3 +35,5 @@ rem 删除原kafka插件
 del skywalking-agent\plugins\apm-canal-1.x-plugin-8.0.0.jar
 rem 复制编译好的插件至指定目录 
 copy apm-sniffer\apm-sdk-plugin\canal-1.x-plugin\target\apm-canal-1.x-plugin-8.0.0.jar skywalking-agent\plugins\
+
+rem 
