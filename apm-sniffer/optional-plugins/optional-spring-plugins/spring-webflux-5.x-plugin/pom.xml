@@ -19,24 +19,22 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>optional-plugins</artifactId>
+        <artifactId>optional-spring-plugins</artifactId>
         <groupId>org.apache.skywalking</groupId>
         <version>8.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
 
-    <artifactId>optional-spring-plugins</artifactId>
+    <artifactId>apm-spring-webflux-5.x-plugin</artifactId>
 
-    <modules>
-        <module>spring-annotation-plugin</module>
-        <module>spring-tx-plugin</module>
-        <module>optional-spring-cloud</module>
-        <module>spring-webflux-5.x-plugin</module>
-    </modules>
+    <url>http://maven.apache.org</url>
 
-    <properties>
-        <sdk.plugin.related.dir>/..</sdk.plugin.related.dir>
-    </properties>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+            <version>5.2.10.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
