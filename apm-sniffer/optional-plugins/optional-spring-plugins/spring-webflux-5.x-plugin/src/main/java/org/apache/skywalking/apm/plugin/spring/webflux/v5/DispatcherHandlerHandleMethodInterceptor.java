@@ -61,6 +61,7 @@ public class DispatcherHandlerHandleMethodInterceptor implements InstanceMethods
         }
 
         AbstractSpan span = ContextManager.createEntrySpan(exchange.getRequest().getURI().getPath(), carrier);
+        exchange.getAttributes().put("global.trace.id", ContextManager.getGlobalTraceId());
         span.setComponent(ComponentsDefine.SPRING_WEBFLUX);
         SpanLayer.asHttp(span);
         Tags.URL.set(span, exchange.getRequest().getURI().toString());
